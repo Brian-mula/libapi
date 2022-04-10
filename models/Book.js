@@ -25,13 +25,13 @@ const BookSchema=mongoose.Schema({
         default:true
     },
     book_amount:{
-        type:String,
+        type:Number,
         required:true
     },
-    category_id:{
-        type:String,
-        required:true
-    }
+    // category:{
+    //     type:Array,
+    //     required:true
+    // }
 },
 {timeStamps:true}
 )

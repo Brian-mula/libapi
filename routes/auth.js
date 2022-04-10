@@ -2,6 +2,8 @@ const express=require('express')
 const Users = require('../models/Users')
 const router=express.Router()
 const CryptoJS=require('crypto-js')
+const jwt = require('jsonwebtoken')
+
 
 
 // !route for user registration
@@ -15,7 +17,7 @@ router.post('/register',async(req,res)=>{
        const savedUser= await newUser.save()
         res.status(200).json(savedUser)
     } catch (error) {
-        res.status(500).json(error)
+        res.json(error)
     }
 
 })
@@ -26,15 +28,23 @@ try {
     !user && res.status(404).json('Incorrect email');
 
     const hashedPassword=CryptoJS.AES.decrypt(user.password, process.env.PASS_SEC);
-    const password=hashedPassword.toString(CryptoJS.enc.Utf8);
+    const orginalPassword=hashedPassword.toString(CryptoJS.enc.Utf8);
 
-    password !==req.body.password && res.status(401).json('incorrect password')
+    orginalPassword !==req.body.password && res.status(401).json('incorrect password')
 
+    const accessToken=jwt.sign({
+        id:user._id,
+        isAdmin:user.isAdmin
+    },process.env.JWT_SEC,
+    
+    {expiresIn: '1d'})
 
-    res.status(200).json(user)
+    const {password,...others}=user._doc
+
+    res.status(200).json({...others,accessToken})
 
 } catch (error) {
-    
+    res.status(500).json(error)
 }
 })
 
