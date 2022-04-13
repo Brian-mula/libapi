@@ -6,6 +6,7 @@ const app=express()
 const userRoutes=require('./routes/users')
 const authRoutes=require('./routes/auth')
 const bookRoutes=require('./routes/product')
+const catRoutes=require("./routes/category")
 
 
 
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use('/library/users',userRoutes)
 app.use('/library/auth',authRoutes)
 app.use('/library/books',bookRoutes)
+app.use("/library/categories",catRoutes)
 // !set up the server
 app.listen(4300,()=>{
     console.log('Backend server running')
