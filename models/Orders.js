@@ -11,6 +11,10 @@ const OrdersSchema=mongoose.Schema({
                 type:String
             }
         }
-    ]
+    ],
+    returned:{
+        type:String,
+        default:"pending"
+    }
 });
 module.exports=mongoose.model('Orders',OrdersSchema)
